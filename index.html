@@ -14,7 +14,6 @@
             --card-bg: rgba(20, 20, 40, 0.85);
         }
 
-        /* Arka Plan: Siberpunk Grid (Izgara) Tasarımı */
         body {
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--dark-bg);
@@ -28,7 +27,6 @@
             text-align: center;
         }
 
-        /* Neon Başlık Konteyneri */
         .header-container {
             background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(254, 1, 154, 0.1));
             border: 2px solid var(--neon-blue);
@@ -59,7 +57,6 @@
             font-weight: 500;
         }
 
-        /* Izgara (Grid) Yapısı */
         .game-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -74,7 +71,6 @@
             }
         }
 
-        /* Retro Oyun Kartı Tasarımı */
         .game-card {
             background: var(--card-bg);
             border: 2px solid #333;
@@ -93,7 +89,6 @@
             box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
         }
 
-        /* Atari Fontlu Öğrenci İsmi */
         .student-name {
             font-family: 'Press Start 2P', cursive;
             font-size: 1.1rem;
@@ -117,7 +112,6 @@
             width: 100%;
         }
 
-        /* Siberpunk Beğen Butonu */
         .like-btn {
             background-color: transparent;
             color: var(--neon-pink);
@@ -141,7 +135,6 @@
             transform: scale(1.05);
         }
 
-        /* Tıklandığındaki Yeşik Neon Durumu */
         .like-btn.liked {
             background-color: var(--neon-green);
             border-color: var(--neon-green);
@@ -167,14 +160,12 @@
         <p class="description">Lütfen oylamayı tarafsız bir biçimde, geliştiricinin emeğine saygı duyarak beğen butonuna basarak veriniz.</p>
     </div>
 
-    <div class="game-grid" id="gameGrid">
-        </div>
+    <div class="game-grid" id="gameGrid"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-        // Sizin Firebase Veritabanı Linkiniz
         const firebaseConfig = {
             databaseURL: "https://scratchoylama-default-rtdb.firebaseio.com/" 
         };
@@ -182,7 +173,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Öğrenci Oyun Linkleri Listesi
         const gameLinks = [
             "https://robotikmuhsin-boop.github.io/scratch-games/abdulkerim.html",
             "https://robotikmuhsin-boop.github.io/scratch-games/alikagan.html",
@@ -233,21 +223,20 @@
 
         const grid = document.getElementById('gameGrid');
 
-        // Oyun kartlarını sayfaya yerleştirme döngüsü
         gameLinks.forEach(link => {
             const nameParts = link.split('/');
-            const fileName = nameParts[nameParts.length - 1];
-            const rawName = fileName.replace('.html', '');
+            const rawName = nameParts[nameParts.length - 1].replace('.html', '');
             const studentName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
 
             const card = document.createElement('div');
             card.className = 'game-card';
+            // loading="lazy" eklendi. Oyunlar direkt açılır ama sayfa kaydırıldıkça yüklenir.
             card.innerHTML = `
                 <div class="student-name">${studentName}</div>
-                <iframe src="${link}" allowfullscreen title="${studentName} Scratch Oyunu"></iframe>
+                <iframe src="${link}" loading="lazy" allowfullscreen title="${studentName} Scratch Oyunu"></iframe>
                 <div class="like-section">
                     <button class="like-btn" id="btn-${rawName}">
-                        <span id="icon-${rawName}">[+]</span> 
+                        <span id="icon-${rawName}">🤍</span> 
                         <span id="text-${rawName}">BEĞEN</span> 
                         (<span class="like-count" id="count-${rawName}">0</span>)
                     </button>
@@ -255,51 +244,42 @@
             `;
             grid.appendChild(card);
 
-            // Kartlar DOM'a eklendikten sonra işlevsellik atıyoruz
             setTimeout(() => {
                 const btn = document.getElementById(`btn-${rawName}`);
                 const iconSpan = document.getElementById(`icon-${rawName}`);
                 const textSpan = document.getElementById(`text-${rawName}`);
                 const countSpan = document.getElementById(`count-${rawName}`);
 
-                // Kullanıcı daha önce oy verdiyse yeşil neon olarak göster
                 if (localStorage.getItem('oyVerildi_' + rawName)) {
-                    iconSpan.textContent = "[V]";
+                    iconSpan.textContent = "❤️";
                     textSpan.textContent = "ONAYLANDI";
                     btn.classList.add('liked');
                 }
 
-                // Veritabanından gerçek zamanlı beğenileri çek
                 const likeRef = ref(db, 'likes/' + rawName);
                 onValue(likeRef, (snapshot) => {
                     const data = snapshot.val();
                     countSpan.textContent = data ? data.count : 0;
                 });
 
-                // Beğenme işlemi
                 btn.addEventListener('click', () => {
                     if (localStorage.getItem('oyVerildi_' + rawName)) {
-                        alert("Sistem Uyarısı: Bu oyunu zaten değerlendirdiniz!");
+                        alert("Bu oyunu zaten beğendiniz!");
                         return;
                     }
 
                     runTransaction(likeRef, (currentData) => {
-                        if (currentData === null) {
-                            return { count: 1 };
-                        } else {
-                            return { count: currentData.count + 1 };
-                        }
+                        return { count: (currentData ? currentData.count : 0) + 1 };
                     }).then(() => {
-                        iconSpan.textContent = "[V]";
+                        iconSpan.textContent = "❤️";
                         textSpan.textContent = "ONAYLANDI";
                         btn.classList.add('liked');
                         localStorage.setItem('oyVerildi_' + rawName, 'true');
                     }).catch((error) => {
-                        console.error("Bağlantı Hatası:", error);
-                        alert("Ağ bağlantısı sağlanamadı. Lütfen tekrar deneyin.");
+                        alert("Oy verirken bir hata oluştu.");
                     });
                 });
-            }, 50);
+            }, 100);
         });
     </script>
 </body>
