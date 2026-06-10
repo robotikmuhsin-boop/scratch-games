@@ -4,141 +4,185 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kendin Kodla, Kendin Oyna</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        /* Genel Sayfa Ayarları */
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #fe019a;
+            --neon-green: #0aff00;
+            --dark-bg: #0b0b1a;
+            --card-bg: rgba(20, 20, 40, 0.85);
+        }
+
+        /* Arka Plan: Siberpunk Grid (Izgara) Tasarımı */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.07) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #fff;
             margin: 0;
             padding: 20px;
             text-align: center;
         }
 
-        /* Başlık ve Açıklama */
+        /* Neon Başlık Konteyneri */
         .header-container {
-            background: linear-gradient(135deg, #2980b9, #2c3e50);
-            color: white;
-            padding: 30px 20px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(254, 1, 154, 0.1));
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(0, 243, 255, 0.1);
+            padding: 40px 20px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            max-width: 1160px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         h1 {
-            margin: 0 0 15px 0;
-            font-size: 2.5em;
-            letter-spacing: 1px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            margin: 0 0 25px 0;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
+            line-height: 1.5;
         }
 
         p.description {
-            font-size: 1.1em;
+            font-size: 1.3em;
             max-width: 800px;
             margin: 0 auto;
-            line-height: 1.6;
-            color: #e0e0e0;
+            color: #a0a0ff;
+            letter-spacing: 1px;
+            font-weight: 500;
         }
 
-        /* Izgara (Grid) Yapısı - Mobil/Tablet için 1, Masaüstü için 2 sütun */
+        /* Izgara (Grid) Yapısı */
         .game-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Mobil ve Tablet Varsayılan: 1 Sütun */
-            gap: 30px;
+            grid-template-columns: 1fr;
+            gap: 40px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Masaüstü Ekranlar (1024px ve üzeri) için 2 Sütun */
         @media (min-width: 1024px) {
             .game-grid {
                 grid-template-columns: 1fr 1fr;
             }
         }
 
-        /* Oyun Kartı Tasarımı */
+        /* Retro Oyun Kartı Tasarımı */
         .game-card {
-            background: #ffffff;
+            background: var(--card-bg);
+            border: 2px solid #333;
             border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
+            padding: 25px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(5px);
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .game-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
         }
 
+        /* Atari Fontlu Öğrenci İsmi */
         .student-name {
-            font-weight: bold;
-            font-size: 1.4em;
-            margin-bottom: 15px;
-            color: #2c3e50;
-            text-transform: capitalize;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
-            width: 100%;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(10, 255, 0, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* Scratch iframe ayarları */
         iframe {
             width: 100%;
-            height: 450px; /* Oyun alanının yüksekliği */
-            border: none;
+            height: 450px;
+            border: 3px solid #222;
             border-radius: 8px;
             background-color: #000;
         }
 
-        /* Beğen Butonu Tasarımı */
         .like-section {
-            margin-top: 20px;
+            margin-top: 25px;
             width: 100%;
         }
 
+        /* Siberpunk Beğen Butonu */
         .like-btn {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-size: 1.1em;
-            font-weight: bold;
+            background-color: transparent;
+            color: var(--neon-pink);
+            border: 2px solid var(--neon-pink);
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(254, 1, 154, 0.2);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
+            gap: 12px;
         }
 
         .like-btn:hover {
-            background-color: #c0392b;
+            background-color: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(254, 1, 154, 0.6);
             transform: scale(1.05);
         }
 
-        /* Beğenildi Durumu */
+        /* Tıklandığındaki Yeşik Neon Durumu */
         .like-btn.liked {
-            background-color: #27ae60;
-            box-shadow: 0 4px 6px rgba(39, 174, 96, 0.3);
+            background-color: var(--neon-green);
+            border-color: var(--neon-green);
+            color: #000;
+            box-shadow: 0 0 25px rgba(10, 255, 0, 0.6);
+            cursor: default;
+            transform: none;
         }
 
+        .like-count {
+            color: #fff;
+        }
+        
+        .like-btn.liked .like-count {
+            color: #000;
+        }
     </style>
 </head>
 <body>
 
     <div class="header-container">
-        <h1>Kendin Kodla, Kendin Oyna</h1>
+        <h1>KENDİN KODLA, KENDİN OYNA</h1>
         <p class="description">Lütfen oylamayı tarafsız bir biçimde, geliştiricinin emeğine saygı duyarak beğen butonuna basarak veriniz.</p>
     </div>
 
     <div class="game-grid" id="gameGrid">
-        <!-- Oyun kartları JavaScript ile buraya eklenecek -->
-    </div>
+        </div>
 
-    <script>
-        // Sağladığınız tüm GitHub oyun linkleri
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        // Sizin Firebase Veritabanı Linkiniz
+        const firebaseConfig = {
+            databaseURL: "https://scratchoylama-default-rtdb.firebaseio.com/" 
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Öğrenci Oyun Linkleri Listesi
         const gameLinks = [
             "https://robotikmuhsin-boop.github.io/scratch-games/abdulkerim.html",
             "https://robotikmuhsin-boop.github.io/scratch-games/alikagan.html",
@@ -189,47 +233,74 @@
 
         const grid = document.getElementById('gameGrid');
 
-        // Linklerden isimleri çıkarıp kartları oluşturma
+        // Oyun kartlarını sayfaya yerleştirme döngüsü
         gameLinks.forEach(link => {
-            // URL'den dosya adını alıp .html uzantısını siliyoruz
             const nameParts = link.split('/');
             const fileName = nameParts[nameParts.length - 1];
             const rawName = fileName.replace('.html', '');
-            
-            // İsmi görsel olarak güzelleştirmek için formatlıyoruz (Örn: yasin6b -> Yasin6b)
             const studentName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
 
-            // Kart HTML'ini oluşturma
             const card = document.createElement('div');
             card.className = 'game-card';
             card.innerHTML = `
                 <div class="student-name">${studentName}</div>
                 <iframe src="${link}" allowfullscreen title="${studentName} Scratch Oyunu"></iframe>
                 <div class="like-section">
-                    <button class="like-btn" onclick="toggleLike(this, '${rawName}')" id="btn-${rawName}">
-                        🤍 Beğen (<span class="like-count">0</span>)
+                    <button class="like-btn" id="btn-${rawName}">
+                        <span id="icon-${rawName}">[+]</span> 
+                        <span id="text-${rawName}">BEĞEN</span> 
+                        (<span class="like-count" id="count-${rawName}">0</span>)
                     </button>
                 </div>
             `;
             grid.appendChild(card);
-        });
 
-        // Beğeni Butonu Fonksiyonu
-        function toggleLike(btn, studentId) {
-            const countSpan = btn.querySelector('.like-count');
-            // Başlangıç için görsel bir sayac animasyonu
-            let currentCount = parseInt(countSpan.textContent);
-            
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                countSpan.textContent = currentCount - 1;
-                btn.innerHTML = `🤍 Beğen (<span class="like-count">${currentCount - 1}</span>)`;
-            } else {
-                btn.classList.add('liked');
-                countSpan.textContent = currentCount + 1;
-                btn.innerHTML = `❤️ Beğenildi (<span class="like-count">${currentCount + 1}</span>)`;
-            }
-        }
+            // Kartlar DOM'a eklendikten sonra işlevsellik atıyoruz
+            setTimeout(() => {
+                const btn = document.getElementById(`btn-${rawName}`);
+                const iconSpan = document.getElementById(`icon-${rawName}`);
+                const textSpan = document.getElementById(`text-${rawName}`);
+                const countSpan = document.getElementById(`count-${rawName}`);
+
+                // Kullanıcı daha önce oy verdiyse yeşil neon olarak göster
+                if (localStorage.getItem('oyVerildi_' + rawName)) {
+                    iconSpan.textContent = "[V]";
+                    textSpan.textContent = "ONAYLANDI";
+                    btn.classList.add('liked');
+                }
+
+                // Veritabanından gerçek zamanlı beğenileri çek
+                const likeRef = ref(db, 'likes/' + rawName);
+                onValue(likeRef, (snapshot) => {
+                    const data = snapshot.val();
+                    countSpan.textContent = data ? data.count : 0;
+                });
+
+                // Beğenme işlemi
+                btn.addEventListener('click', () => {
+                    if (localStorage.getItem('oyVerildi_' + rawName)) {
+                        alert("Sistem Uyarısı: Bu oyunu zaten değerlendirdiniz!");
+                        return;
+                    }
+
+                    runTransaction(likeRef, (currentData) => {
+                        if (currentData === null) {
+                            return { count: 1 };
+                        } else {
+                            return { count: currentData.count + 1 };
+                        }
+                    }).then(() => {
+                        iconSpan.textContent = "[V]";
+                        textSpan.textContent = "ONAYLANDI";
+                        btn.classList.add('liked');
+                        localStorage.setItem('oyVerildi_' + rawName, 'true');
+                    }).catch((error) => {
+                        console.error("Bağlantı Hatası:", error);
+                        alert("Ağ bağlantısı sağlanamadı. Lütfen tekrar deneyin.");
+                    });
+                });
+            }, 50);
+        });
     </script>
 </body>
 </html>
