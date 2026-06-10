@@ -84,7 +84,6 @@
         }
 
         .game-card:hover {
-            transform: translateY(-10px) scale(1.02);
             border-color: var(--neon-blue);
             box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
         }
@@ -99,13 +98,33 @@
             letter-spacing: 2px;
         }
 
-        iframe {
+        /* Akıllı Yükleme Konteyneri */
+        .iframe-container {
             width: 100%;
             height: 450px;
+            background-color: #000;
             border: 3px solid #222;
             border-radius: 8px;
-            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .loading-text {
+            color: var(--neon-blue);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         .like-section {
             margin-top: 25px;
@@ -144,10 +163,6 @@
             transform: none;
         }
 
-        .like-count {
-            color: #fff;
-        }
-        
         .like-btn.liked .like-count {
             color: #000;
         }
@@ -223,6 +238,24 @@
 
         const grid = document.getElementById('gameGrid');
 
+        // Tarayıcı çökmesini engelleyen "Akıllı Gözlemleyici"
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const container = entry.target;
+                const link = container.getAttribute('data-src');
+                
+                if (entry.isIntersecting) {
+                    // Ekrana girince oyunu direkt yükle
+                    if (!container.querySelector('iframe')) {
+                        container.innerHTML = `<iframe src="${link}" allowfullscreen></iframe>`;
+                    }
+                } else {
+                    // Ekrandan çıkınca WebGL hafızasını boşalt
+                    container.innerHTML = `<div class="loading-text">YÜKLENİYOR...</div>`;
+                }
+            });
+        }, { rootMargin: "300px" });
+
         gameLinks.forEach(link => {
             const nameParts = link.split('/');
             const rawName = nameParts[nameParts.length - 1].replace('.html', '');
@@ -230,10 +263,11 @@
 
             const card = document.createElement('div');
             card.className = 'game-card';
-            // loading="lazy" eklendi. Oyunlar direkt açılır ama sayfa kaydırıldıkça yüklenir.
             card.innerHTML = `
                 <div class="student-name">${studentName}</div>
-                <iframe src="${link}" loading="lazy" allowfullscreen title="${studentName} Scratch Oyunu"></iframe>
+                <div class="iframe-container" id="container-${rawName}" data-src="${link}">
+                    <div class="loading-text">YÜKLENİYOR...</div>
+                </div>
                 <div class="like-section">
                     <button class="like-btn" id="btn-${rawName}">
                         <span id="icon-${rawName}">🤍</span> 
@@ -244,6 +278,11 @@
             `;
             grid.appendChild(card);
 
+            // Oyunu gözlemleyiciye ekle
+            const iframeContainer = card.querySelector('.iframe-container');
+            observer.observe(iframeContainer);
+
+            // Beğeni Butonu Veritabanı İşlemleri
             setTimeout(() => {
                 const btn = document.getElementById(`btn-${rawName}`);
                 const iconSpan = document.getElementById(`icon-${rawName}`);
