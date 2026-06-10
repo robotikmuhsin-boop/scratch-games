@@ -5,20 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kendin Kodla, Kendin Oyna</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; color: #333; margin: 0; padding: 20px; text-align: center; }
-        .header-container { background: linear-gradient(135deg, #2980b9, #2c3e50); color: white; padding: 30px 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { margin: 0 0 15px 0; font-size: 2.5em; letter-spacing: 1px; }
-        p.description { font-size: 1.1em; max-width: 800px; margin: 0 auto; line-height: 1.6; color: #e0e0e0; }
-        .game-grid { display: grid; grid-template-columns: 1fr; gap: 30px; max-width: 1200px; margin: 0 auto; }
-        @media (min-width: 1024px) { .game-grid { grid-template-columns: 1fr 1fr; } }
-        .game-card { background: #ffffff; border-radius: 16px; padding: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; }
-        .game-card:hover { transform: translateY(-5px); }
-        .student-name { font-weight: bold; font-size: 1.4em; margin-bottom: 15px; color: #2c3e50; text-transform: capitalize; border-bottom: 2px solid #3498db; padding-bottom: 5px; width: 100%; }
-        iframe { width: 100%; height: 450px; border: none; border-radius: 8px; background-color: #000; }
-        .like-section { margin-top: 20px; width: 100%; }
-        .like-btn { background-color: #e74c3c; color: white; border: none; padding: 12px 25px; border-radius: 30px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3); }
-        .like-btn:hover { background-color: #c0392b; transform: scale(1.05); }
-        .like-btn.liked { background-color: #27ae60; box-shadow: 0 4px 6px rgba(39, 174, 96, 0.3); cursor: default; transform: none; }
+        /* Genel Sayfa Ayarları */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Başlık ve Açıklama */
+        .header-container {
+            background: linear-gradient(135deg, #2980b9, #2c3e50);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin: 0 0 15px 0;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+
+        p.description {
+            font-size: 1.1em;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        /* Izgara (Grid) Yapısı - Mobil/Tablet için 1, Masaüstü için 2 sütun */
+        .game-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobil ve Tablet Varsayılan: 1 Sütun */
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Masaüstü Ekranlar (1024px ve üzeri) için 2 Sütun */
+        @media (min-width: 1024px) {
+            .game-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Oyun Kartı Tasarımı */
+        .game-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .student-name {
+            font-weight: bold;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-transform: capitalize;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            width: 100%;
+        }
+
+        /* Scratch iframe ayarları */
+        iframe {
+            width: 100%;
+            height: 450px; /* Oyun alanının yüksekliği */
+            border: none;
+            border-radius: 8px;
+            background-color: #000;
+        }
+
+        /* Beğen Butonu Tasarımı */
+        .like-section {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .like-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
+        }
+
+        .like-btn:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+        /* Beğenildi Durumu */
+        .like-btn.liked {
+            background-color: #27ae60;
+            box-shadow: 0 4px 6px rgba(39, 174, 96, 0.3);
+        }
+
     </style>
 </head>
 <body>
@@ -28,20 +133,12 @@
         <p class="description">Lütfen oylamayı tarafsız bir biçimde, geliştiricinin emeğine saygı duyarak beğen butonuna basarak veriniz.</p>
     </div>
 
-    <div class="game-grid" id="gameGrid"></div>
+    <div class="game-grid" id="gameGrid">
+        <!-- Oyun kartları JavaScript ile buraya eklenecek -->
+    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-        // VERİTABANI LİNKİNİZİ AŞAĞIYA YAPIŞTIRIN:
-        const firebaseConfig = {
-            databaseURL: "https://scratchoylama-default-rtdb.firebaseio.com/" 
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
+    <script>
+        // Sağladığınız tüm GitHub oyun linkleri
         const gameLinks = [
             "https://robotikmuhsin-boop.github.io/scratch-games/abdulkerim.html",
             "https://robotikmuhsin-boop.github.io/scratch-games/alikagan.html",
@@ -92,64 +189,47 @@
 
         const grid = document.getElementById('gameGrid');
 
+        // Linklerden isimleri çıkarıp kartları oluşturma
         gameLinks.forEach(link => {
+            // URL'den dosya adını alıp .html uzantısını siliyoruz
             const nameParts = link.split('/');
-            const rawName = nameParts[nameParts.length - 1].replace('.html', '');
+            const fileName = nameParts[nameParts.length - 1];
+            const rawName = fileName.replace('.html', '');
+            
+            // İsmi görsel olarak güzelleştirmek için formatlıyoruz (Örn: yasin6b -> Yasin6b)
             const studentName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
 
+            // Kart HTML'ini oluşturma
             const card = document.createElement('div');
             card.className = 'game-card';
             card.innerHTML = `
                 <div class="student-name">${studentName}</div>
                 <iframe src="${link}" allowfullscreen title="${studentName} Scratch Oyunu"></iframe>
                 <div class="like-section">
-                    <button class="like-btn" id="btn-${rawName}">
-                        <span id="icon-${rawName}">🤍</span> 
-                        <span id="text-${rawName}">Beğen</span> 
-                        (<span class="like-count" id="count-${rawName}">0</span>)
+                    <button class="like-btn" onclick="toggleLike(this, '${rawName}')" id="btn-${rawName}">
+                        🤍 Beğen (<span class="like-count">0</span>)
                     </button>
                 </div>
             `;
             grid.appendChild(card);
-
-            // Gecikmeli buton ataması (DOM'a eklendiğinden emin olmak için)
-            setTimeout(() => {
-                const btn = document.getElementById(`btn-${rawName}`);
-                const iconSpan = document.getElementById(`icon-${rawName}`);
-                const textSpan = document.getElementById(`text-${rawName}`);
-                const countSpan = document.getElementById(`count-${rawName}`);
-
-                if (localStorage.getItem('oyVerildi_' + rawName)) {
-                    iconSpan.textContent = "❤️";
-                    textSpan.textContent = "Beğenildi";
-                    btn.classList.add('liked');
-                }
-
-                const likeRef = ref(db, 'likes/' + rawName);
-                onValue(likeRef, (snapshot) => {
-                    const data = snapshot.val();
-                    countSpan.textContent = data ? data.count : 0;
-                });
-
-                btn.addEventListener('click', () => {
-                    if (localStorage.getItem('oyVerildi_' + rawName)) {
-                        alert("Bu oyunu zaten beğendiniz! Desteğiniz için teşekkürler.");
-                        return;
-                    }
-
-                    runTransaction(likeRef, (currentData) => {
-                        return { count: (currentData ? currentData.count : 0) + 1 };
-                    }).then(() => {
-                        iconSpan.textContent = "❤️";
-                        textSpan.textContent = "Beğenildi";
-                        btn.classList.add('liked');
-                        localStorage.setItem('oyVerildi_' + rawName, 'true');
-                    }).catch((error) => {
-                        alert("Oy verirken bir hata oluştu. Lütfen tekrar deneyin.");
-                    });
-                });
-            }, 100);
         });
+
+        // Beğeni Butonu Fonksiyonu
+        function toggleLike(btn, studentId) {
+            const countSpan = btn.querySelector('.like-count');
+            // Başlangıç için görsel bir sayac animasyonu
+            let currentCount = parseInt(countSpan.textContent);
+            
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                countSpan.textContent = currentCount - 1;
+                btn.innerHTML = `🤍 Beğen (<span class="like-count">${currentCount - 1}</span>)`;
+            } else {
+                btn.classList.add('liked');
+                countSpan.textContent = currentCount + 1;
+                btn.innerHTML = `❤️ Beğenildi (<span class="like-count">${currentCount + 1}</span>)`;
+            }
+        }
     </script>
 </body>
 </html>
